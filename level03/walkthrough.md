@@ -12,10 +12,10 @@ Invalid Password
 ```
 
 ## methodology
-- no common exploit
+- brute-force attack
 
-After closer examination, we construct the basic scheme of the binary's life cycle:
-```
+After a closer examination, we can outline the basic flow of the binary's lifecycle:
+``` vbnet
 F_MAIN:
   stdin: input 
     --> call: test(input, 322424845)
@@ -35,7 +35,7 @@ F_DECRYPT:
             |--> no: invalid password
 ```
 
-The decryption buffer was identified using the following steps:
+We identified the decryption buffer using the following steps:
 ``` shell
 (gdb) b *decrypt+51
 Breakpoint 1 at 0x8048693
@@ -54,12 +54,14 @@ ebp            0xffffd5b8	0xffffd5b8
 0xffffd59b:	 "Q}|u`sfg~sf{}|a3"
 ```
 
-The exploitation itself is pretty straightforward, we just try passing numbers that comply with the following conditions:
-```
+The exploitation is straightforward: we simply test inputs that meet the following conditions:
+``` vbnet
 --> 322424845 - input <= 21 --> input + 21 >= 322424845
     |--> No negative numbers!
     |--> input is in the range [322424824, 322424845]
 ```
+
+We use an automated shell script to brute-force the correct input by testing the mentioned array of numbers.
 
 ## flag
 ``` shell

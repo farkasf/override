@@ -10,9 +10,9 @@ Password:
 ```
 
 ## methodology
-- no common exploit
+- hardcoded password check attack
 
-Similarly to the previous project, the entered password is directly compared to a number, and a shell is spawned if the two match.
+Similar to the previous project, the entered password is directly compared to a specific value. If the password matches this value, a shell is spawned.
 ``` shell
 0x080484e7 <+83>:	cmp    $0x149c,%eax
 

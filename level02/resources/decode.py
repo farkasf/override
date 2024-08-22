@@ -6,4 +6,4 @@ for seq in encrypted:
 
 password = "".join(decrypted)
 
-print "flag: %s" % password
+print "flag: {}".format(password)

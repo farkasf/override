@@ -14,20 +14,19 @@ level06@OverRide:~$ ./level06
 ```
 
 ## methodology
-- syscall tampering
+- syscall tampering attack
 
-Upon inspecting the binary, we realize that its main purpose is to take a given login and serial as input, perform a <code>ptrace</code> check to see if any tampering happened, generate a hash of the login and check if it matches the serial. The task seems pretty straightforward:
+Upon inspecting the binary, we find that its main functionality involves taking a login and serial as input, performing a `ptrace` check to detect tampering, generating a hash of the login, and comparing it to the provided serial. The task is straightforward:
 
-- find a way around the <code>ptrace</code> check to be able to debug with gdb
-- uncover the hash for a given login, so we can use it for authentification
+- bypass the `ptrace` check to enable debugging with gdb
+- uncover the hash for a given login so we can use it for authentication
 
-The first subtask is pretty straighforward, as we break directly on the <code>ptrace</code> call. As for the serial, we can access it from the part of the <code>auth</code> function where the comparison happens:
-
+The first subtask is straightforward: we set a breakpoint on the `ptrace` call. For the serial, we can obtain it from the part of the `auth` function where the comparison is made:
 ``` shell
    0x08048866 <+286>:	cmp    -0x10(%ebp),%eax
 ```
 
-We run gdb with the 2 breaks:
+We run the binary with `gdb` and set two breakpoints:
 ``` shell
 level06@OverRide:~$ gdb ./level06 
 Reading symbols from /home/users/level06/level06...(no debugging symbols found)...done.
@@ -47,7 +46,7 @@ Starting program: /home/users/level06/level06
 -> Enter Serial: 4242
 ```
 
-On the first break, we change the return value of the <code>eax</code> register:
+When the first breakpoint is hit, we modify the return value of the `eax` register:
 ``` shell
 Breakpoint 1, 0xf7f14990 in ptrace () from /lib32/libc.so.6
 (gdb) step
@@ -62,7 +61,7 @@ Single stepping until exit from function auth,
 which has no line number information.
 ```
 
-On the second break, we can see that the <code>eax</code> register contains the entered serial and <code>ebp-0x10</code> holds the value of the generated value that is compared to it:
+When the second breakpoint is hit, we check that the `eax` register contains the entered serial and `ebp-0x10` holds the generated hash value that is compared to it:
 ``` shell
 Breakpoint 2, 0x08048866 in auth ()
 (gdb) p $eax
@@ -73,7 +72,7 @@ $3 = (void *) 0xffffd5a8
 0xffffd5a8:	6233782
 ```
 
-This gives us the correct login/serial combination enabling us to log in.
+This reveals the correct login/serial combination needed for authentication.
 
 ## flag
 ``` shell

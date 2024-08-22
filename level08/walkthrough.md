@@ -10,18 +10,18 @@ ERROR: Failed to open (null)
 ## methodology
 - directory traversal attack
 
-As we examine the binary, we can see it opens a remote file. The next level password cannot be accessed directly though:
+Upon examining the binary, we see that it attempts to open a remote file. However, accessing the next level password directly is not possible:
 ``` shell
 level08@OverRide:~$ ./level08 /home/users/level09/.pass
 ERROR: Failed to open ./backups//home/users/level09/.pass
 ```
 
-We can't create the backup directly in home because of the lack of permissions. We opt to move to <code>/tmp</code> and create a path directory that matches the required output:
+Since we can't create the backup directory directly in the `/home` directory due to permissions, we move to `/tmp` and create a directory structure that matches the required path:
 ``` shell
 level08@OverRide:/tmp$ mkdir -p backups//home/users/level09/
 ```
 
-From this location, we execute the command again and spawn the password for level09.
+From this location, we run the command again to retrieve the password for level09.
 
 ## flag
 ``` shell
