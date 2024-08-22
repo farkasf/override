@@ -1,12 +1,7 @@
-0x080485c4  clear_stdin
-0x080485e7  get_unum
-0x0804861f  prog_timeout
-0x08048630  store_number
-0x080486d7  read_number
-0x08048723  main
+# level07 analysis
 
-
-(gdb) disas main
+## main() function
+``` asm
 Dump of assembler code for function main:
    0x08048723 <+0>:	push   %ebp
    0x08048724 <+1>:	mov    %esp,%ebp
@@ -192,7 +187,10 @@ Dump of assembler code for function main:
    0x080489f0 <+717>:	pop    %ebp
    0x080489f1 <+718>:	ret    
 End of assembler dump.
+```
 
+## read_number() function
+``` asm
 Dump of assembler code for function read_number:
    0x080486d7 <+0>:	push   %ebp
    0x080486d8 <+1>:	mov    %esp,%ebp
@@ -217,8 +215,10 @@ Dump of assembler code for function read_number:
    0x08048721 <+74>:	leave  
    0x08048722 <+75>:	ret    
 End of assembler dump.
+```
 
-(gdb) disas get_unum 
+## get_unum() function
+``` asm
 Dump of assembler code for function get_unum:
    0x080485e7 <+0>:	push   %ebp
    0x080485e8 <+1>:	mov    %esp,%ebp
@@ -237,9 +237,10 @@ Dump of assembler code for function get_unum:
    0x0804861d <+54>:	leave  
    0x0804861e <+55>:	ret    
 End of assembler dump.
+```
 
-
-(gdb) disas store_number 
+## store_number() function
+``` asm
 Dump of assembler code for function store_number:
    0x08048630 <+0>:	push   %ebp
    0x08048631 <+1>:	mov    %esp,%ebp
@@ -289,8 +290,10 @@ Dump of assembler code for function store_number:
    0x080486d5 <+165>:	leave  
    0x080486d6 <+166>:	ret    
 End of assembler dump.
+```
 
-(gdb) disas clear_stdin 
+## clear_stdin() function
+``` asm
 Dump of assembler code for function clear_stdin:
    0x080485c4 <+0>:	push   %ebp
    0x080485c5 <+1>:	mov    %esp,%ebp
@@ -307,8 +310,10 @@ Dump of assembler code for function clear_stdin:
    0x080485e5 <+33>:	leave  
    0x080485e6 <+34>:	ret    
 End of assembler dump.
+```
 
-(gdb) disas prog_timeout 
+## prog_timeout() function
+``` asm
 Dump of assembler code for function prog_timeout:
    0x0804861f <+0>:	push   %ebp
    0x08048620 <+1>:	mov    %esp,%ebp
@@ -318,3 +323,4 @@ Dump of assembler code for function prog_timeout:
    0x0804862e <+15>:	pop    %ebp
    0x0804862f <+16>:	ret    
 End of assembler dump.
+```
