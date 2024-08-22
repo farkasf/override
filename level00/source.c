@@ -11,13 +11,15 @@ int main()
 	printf("Password:");
 
 	scanf("%d", &pass);
-	if (pass == 0x149c)
+
+	if (pass == 5276)
 	{
 		puts("\nAuthenticated!");
 		system("/bin/sh");
-		return(0);
+		return (0);
 	}
 	else
 		puts("\nInvalid Password!");
-	return(1);
+
+	return (1);
 }
