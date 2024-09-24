@@ -27,6 +27,13 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		printf("Usage: %s filename\n", av[0]);
+
+	backup_f = fopen(av[1], "r");
+	if (backup_f == 0)
+	{
+		printf("ERROR: Failed to open %s\n", av[1]);
+		exit(1);
+	}
 	
 	log_f = fopen("./backups/.log", "w");
 	if (log_f == 0)
@@ -36,13 +43,6 @@ int	main(int ac, char **av)
 	}
 
 	log_wrapper(log_f, "Starting back up: ", av[1]);
-
-	backup_f = fopen(av[1], "r");
-	if (backup_f == 0)
-	{
-		printf("ERROR: Failed to open %s\n", av[1]);
-		exit(1);
-	}
 
 	strcpy(buffer, "./backups/");
 	strncat(buffer, av[1], 99 - strlen(buffer));
