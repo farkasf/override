@@ -11,7 +11,8 @@ child is exiting...
 ## methodology
 - ret2libc attack
 
-The `gets` function is vulnerable to a buffer overflow, which allows us to perform a ret2libc attack. Calculating the offset is tricky because a child process is created in the `main` function, and there’s no way for a segmentation fault to occur since the parent process is still waiting. However, we can bypass this issue with the following steps:
+The `gets` function is vulnerable to buffer overflow, enabling a ret2libc attack. Calculating the offset is challenging because a child process is created in the `main` function, preventing a segmentation fault from occurring, as the parent process remains in a waiting state. However, we can overcome this issue by following the child process after a `fork()` system call, rather than the parent process:
+
 ``` shell
 (gdb) set follow-fork-mode child
 (gdb) r
@@ -31,7 +32,7 @@ Now for the ret2libc:
 3. address of `exit` = 0xf7e5eb70
 4. address of `/bin/bash` = 0xf7f897ec
 
-Our payload is generated using an attached script.
+Our payload is generated using the attached script.
 
 ## flag
 ``` shell

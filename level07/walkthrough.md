@@ -55,7 +55,7 @@ As we observed the behavior of the binary with various inputs and examined the d
 - the array has 100 active number positions
 - there are no limits on indices, so we can access stack memory
 - some positions are protected (zero + indices divisible by 3)
-- the `env` and `argv` are overwritten before the storage is run (= no shellcode)
+- the `env` and `argv` are overwritten before the storage is run (= no shellcode possible)
 
 We start by printing stack variables stored in indices greater than 100:
 ``` shell
@@ -88,7 +88,7 @@ tab[124]: 0xf7fceff4
 tab[125]: 0x0
 ```
 
-The `EIP` register is located at position 114, which is unfortunately reserved for wil. Since the `EIP` register tells the CPU where to execute the next instruction, gaining control of it is crucial. To access this position, we use integer overflow:
+The `EIP` register is located at position 114 (as the `0xf7` prefix suggests it is likely within the range of dynamically linked libraries, such as `libc`), which is unfortunately reserved for wil. Since the `EIP` register tells the CPU where to execute the next instruction, gaining control of it is crucial. To access this position, we use integer overflow:
 ``` vbnet
 UINT_MAX = 4294967295 (+ 1 for overflow)
 

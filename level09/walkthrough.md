@@ -17,10 +17,10 @@ level09@OverRide:~$ ./level09
 ## methodology
 - buffer overflow attack
 
-The binary prompts for a username and message upon execution. By examining the list of functions, we find a `secret_backdoor` function that is not called in the main logic. This function uses `system` to execute a command. Our task is therefore simple:
+The binary prompts for a username and message upon execution. By examining the list of functions, we find a `secret_backdoor` function that is not called in the main execution path. This function uses `system` to execute a command. Our task is therefore simple:
 
 - find a way to cause a buffer overflow when entering the input (since `fgets` is used, we need to overflow the buffer by knowing the allocated memory for each array)
-- overwrite and control the `EIP` register.
+- overwrite and control the `EIP` register
 
 The binary uses a structure to manage the data:
 ``` C

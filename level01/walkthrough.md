@@ -31,7 +31,7 @@ Since the binary is vulnerable to a buffer overflow, we can exploit this to perf
 3. address of `exit` = 0xf7e5eb70
 4. address of `/bin/sh` = 0xf7f897ec
 
-Our payload is generated using an attached script.
+Our payload is generated using the attached script.
 
 ## flag
 ``` shell

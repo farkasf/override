@@ -36,7 +36,7 @@ Non-debugging symbols:
    0x8048370 <exit@plt>:	jmp    *0x80497e0
 ```
 
-Our payload is generated using an attached script. We need to split the shellcode because of the large numbers involved, as we cannot write a full 32-bit value all at once (shellcode is split into two 16-bit parts and separately injected into the lower and upper 2 bytes of the `exit` function):
+Our payload is generated using the attached script. We need to split the shellcode because of the large numbers involved, as we cannot write a full 32-bit value all at once (shellcode is split into two 16-bit parts and separately injected into the lower and upper 2 bytes of the `exit` function):
 ``` shell
 (gdb) p 0xffff
 $1 = 65535

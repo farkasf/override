@@ -56,9 +56,9 @@ ebp            0xffffd5b8	0xffffd5b8
 
 The exploitation is straightforward: we simply test inputs that meet the following conditions:
 ``` vbnet
---> 322424845 - input <= 21 --> input + 21 >= 322424845
+--> 0 <= 322424845 - input && 322424845 - input <= 21 --> 322424824 <= input <= 322424845
     |--> No negative numbers!
-    |--> input is in the range [322424824, 322424845]
+    |--> input ∈ <322424824, 322424845>
 ```
 
 We use an automated shell script to brute-force the correct input by testing the mentioned array of numbers.
